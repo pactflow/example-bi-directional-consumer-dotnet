@@ -34,7 +34,7 @@ fake_ci:
 
 publish_pacts:
 	@echo "\n========== STAGE: publish pacts ==========\n"
-	@"${PACT_CLI}" publish ${PWD}/tests/pacts --consumer-app-version ${GIT_COMMIT}--branch ${GIT_BRANCH}
+	@"${PACT_CLI}" publish ${PWD}/tests/pacts --consumer-app-version ${GIT_COMMIT} --branch ${GIT_BRANCH}
 
 ## =====================
 ## Build/test tasks
