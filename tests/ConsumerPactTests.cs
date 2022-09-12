@@ -83,7 +83,6 @@ namespace tests
                 .WithJsonBody(new
                 {
                     id = Match.Type(27),
-                    name = Match.Type("burger"),
                     type = Match.Type("food")
                 });
 
