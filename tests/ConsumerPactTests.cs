@@ -55,7 +55,6 @@ namespace tests
                 .WithJsonBody(Match.MinType(new
                 {
                     id = 27,
-                    name = "burger",
                     type = "food"
                 }, 1));
 
@@ -67,7 +66,6 @@ namespace tests
 
                 //Assert
                 Assert.IsType<int>(products[0].id);
-                Assert.IsType<string>(products[0].name);
                 Assert.IsType<string>(products[0].type);
             });
             //the mock server is no longer running once VerifyAsync returns
@@ -97,7 +95,6 @@ namespace tests
 
                 //Assert
                 Assert.IsType<int>(product.id);
-                Assert.IsType<string>(product.name);
                 Assert.IsType<string>(product.type);
             });
         }
