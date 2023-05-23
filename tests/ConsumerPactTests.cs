@@ -5,8 +5,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Consumer;
 using System.Net.Http;
+using System.Collections.Generic;
 using PactNet.Matchers;
 using System;
+using PactNet.Output.Xunit;
+using PactNet.Infrastructure.Outputters;
+using System.Threading.Tasks;
 
 namespace tests
 {
@@ -22,12 +26,8 @@ namespace tests
             {
                 PactDir = "../../../pacts/",
                 LogLevel = PactLogLevel.Debug,
-                Outputters = (new[]
-           {
-                // NOTE: We default to using a ConsoleOutput, however xUnit 2 does not capture the console output,
-                // so a custom outputter is required.
-                new XUnitOutput(output)
-            }),
+                 Outputters = new List<IOutput> { new XunitOutput(output), new ConsoleOutput() },
+
                 DefaultJsonSettings = new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
@@ -39,11 +39,11 @@ namespace tests
             IPactV3 pact = Pact.V3("pactflow-example-bi-directional-consumer-dotnet", provider != null ? provider : "pactflow-example-bi-directional-provider-dotnet" , config);
 
             // the pact builder is created in the constructor so it's unique to each test
-            this.pact = pact.UsingNativeBackend(port);
+            this.pact = pact.WithHttpInteractions();
         }
 
         [Fact]
-        public async void GetProducts_WhenCalled_ReturnsAllProducts()
+        public async Task GetProducts_WhenCalled_ReturnsAllProducts()
         {
             //Arrange
             pact
@@ -74,7 +74,7 @@ namespace tests
         }
 
         [Fact]
-        public async void GetProduct_WhenCalledWithExistingId_ReturnsProduct()
+        public async Task GetProduct_WhenCalledWithExistingId_ReturnsProduct()
         {
             pact
                 .UponReceiving("a request to retrieve a product with existing id")
@@ -103,7 +103,7 @@ namespace tests
         }
 
         [Fact]
-        public async void GetProduct_WhenCalledWithInvalidID_ReturnsError()
+        public async Task GetProduct_WhenCalledWithInvalidID_ReturnsError()
         {
             pact
                 .UponReceiving("a request to retrieve a product id that does not exist")
