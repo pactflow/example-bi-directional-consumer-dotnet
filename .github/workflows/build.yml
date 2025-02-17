@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3.0.3
+        uses: actions/setup-dotnet@ea9897a6e57642ca932850b656df2880bc7cd2a8 # v3.3.0
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: test for ${{ matrix.pact_provider }}
