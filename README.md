@@ -78,7 +78,7 @@ See [Environment variables](#environment-variables) on how to set these up.
 
 - Tools listed at: https://docs.pactflow.io/docs/workshops/ci-cd/set-up-ci/prerequisites/
 - A pactflow.io account with an valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token)
-* [.NET core 6.0 SDK installed](https://dotnet.microsoft.com/en-us/download/dotnet/6.0), this is the version of .NET core used for this example.
+* [.NET core 8.0 SDK installed](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), this is the version of .NET core used for this example.
 * Docker running on your local machine
   
 ### Environment variables
@@ -144,7 +144,7 @@ You can still try this example locally on Windows using powershell and running c
   4. Check can-i-deploy to see if your provider is compatible with your pact.
 
       ```
-      docker run --rm -v <path_to_project_root>:<path_to_project_root> -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli  broker can-i-deploy --pacticipant pactflow-example-bi-directional-consumer-dotnet --version $env:GIT_COMMIT --to-environment production  --retry-while-unknown 0 --retry-interval 10
+      docker run --rm -v <path_to_project_root>:<path_to_project_root> -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli  broker can-i-deploy --pacticipant pactflow-example-bi-directional-consumer-dotnet --version $env:GIT_COMMIT --to-environment production  --retry-while-unknown 5 --retry-interval 10
       ```
 
 5. Have a look at what other commands are available in the Makefile. All of them can be ran locally from Powershell by changing the windows paths to UNIX and replacing the environment variable references. Any variable referenced as `${VARIABLE}` can be changed to `$env:VARIABLE` to reference environment variables in Powershell.

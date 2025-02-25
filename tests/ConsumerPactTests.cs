@@ -1,8 +1,6 @@
 ﻿using PactNet;
 using Xunit;
 using Xunit.Abstractions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Consumer;
 using System.Net.Http;
 using System.Collections.Generic;
@@ -11,12 +9,13 @@ using System;
 using PactNet.Output.Xunit;
 using PactNet.Infrastructure.Outputters;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace tests
 {
     public class ConsumerPactTests
     {
-        private readonly IPactBuilderV3 pact;
+        private readonly IPactBuilderV4 pact;
 
         public ConsumerPactTests(ITestOutputHelper output)
         {
@@ -24,17 +23,17 @@ namespace tests
             {
                 PactDir = "../../../pacts/",
                 LogLevel = PactLogLevel.Debug,
-                 Outputters = new List<IOutput> { new XunitOutput(output), new ConsoleOutput() },
+                Outputters = new List<IOutput> { new XunitOutput(output), new ConsoleOutput() },
 
-                DefaultJsonSettings = new JsonSerializerSettings
+                DefaultJsonSettings = new JsonSerializerOptions
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 }
             };
 
             String provider = Environment.GetEnvironmentVariable("PACT_PROVIDER");
             // you select which specification version you wish to use by calling either V2 or V3
-            IPactV3 pact = Pact.V3("pactflow-example-bi-directional-consumer-dotnet", provider != null ? provider : "pactflow-example-bi-directional-provider-dotnet" , config);
+            IPactV4 pact = Pact.V4("pactflow-example-bi-directional-consumer-dotnet", provider != null ? provider : "pactflow-example-bi-directional-provider-dotnet" , config);
 
             // the pact builder is created in the constructor so it's unique to each test
             this.pact = pact.WithHttpInteractions();
